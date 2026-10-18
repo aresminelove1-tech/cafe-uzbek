@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чайхана Нон | Настоящая узбекская кухня</title>
+    
+    <!-- Google Fonts: благородный антиквенный шрифт и читабельный гротеск -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Marcellus&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkwood: '#140507',
+                        nightember: '#1f080b',
+                        gold: {
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                        },
+                        terracotta: {
+                            500: '#d95327',
+                            600: '#bd3e17',
+                            700: '#942b0c',
+                        },
+                        sand: {
+                            50: '#FDFCF9',
+                            100: '#F7F3EB',
+                            200: '#EFE7DA',
+                            300: '#DFD2BE',
+                            400: '#CBB89B',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Marcellus', 'serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Кастомные CSS-анимации: Аврора, искры тандыра, пульсация кнопок -->
+    <style>
+        /* Анимированный восточный узор */
+        .bg-oriental-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='70' height='70' viewBox='0 0 70 70' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M35 0 L70 35 L35 70 L0 35 Z M35 12 L58 35 L35 58 L12 35 Z M35 24 L46 35 L35 46 L24 35 Z' fill='%23ea580c' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
+            animation: patternFloat 50s linear infinite;
+        }
+
+        @keyframes patternFloat {
+            0% { background-position: 0 0; }
+            100% { background-position: 350px 350px; }
+        }
+
+        /* Живые световые сферы (Aurora / Tandoor Embers) */
+        @keyframes auroraGlow1 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); opacity: 0.5; }
+            50% { transform: translate(50px, -30px) scale(1.25); opacity: 0.8; }
+        }
+
+        @keyframes auroraGlow2 {
+            0%, 100% { transform: translate(0px, 0px) scale(1.1); opacity: 0.6; }
+            50% { transform: translate(-40px, 40px) scale(0.9); opacity: 0.35; }
+        }
+
+        .animate-aurora-1 { animation: auroraGlow1 9s ease-in-out infinite; }
+        .animate-aurora-2 { animation: auroraGlow2 12s ease-in-out infinite; }
+
+        /* Взлетающие искры и зёрна кунжута */
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(110vh) translateX(0) scale(0.5);
+                opacity: 0;
+            }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.6; }
+            100% {
+                transform: translateY(-20px) translateX(60px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 9999px;
+            pointer-events: none;
+            animation: floatParticle 8s infinite linear;
+        }
+
+        /* Пульсирующее свечение CTA-кнопок */
+        .btn-gold-glow {
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.45);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-gold-glow:hover {
+            box-shadow: 0 0 45px rgba(250, 204, 21, 0.8), 0 0 15px rgba(217, 83, 39, 0.5);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .btn-terracotta-glow {
+            box-shadow: 0 0 25px rgba(217, 83, 39, 0.45);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-terracotta-glow:hover {
+            box-shadow: 0 0 45px rgba(234, 88, 12, 0.85);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        /* Бегущий блик */
+        .shimmer-sweep {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer-sweep::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.45), transparent);
+            transform: rotate(25deg);
+            animation: sweep 4s infinite;
+        }
+        @keyframes sweep {
+            0%, 60% { left: -60%; }
+            100% { left: 140%; }
+        }
+
+        /* Scroll Reveal */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Скрытие карточек меню при фильтрации */
+        .menu-card {
+            transition: all 0.4s ease;
+        }
+        .menu-card.is-hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-sand-100 text-darkwood font-sans antialiased selection:bg-gold-500 selection:text-darkwood">
+
+    <!-- ШАПКА САЙТА (Header на тёмном премиальном фоне) -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-darkwood/80 backdrop-blur-xl border-b border-white/10 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Логотип -->
+            <a href="#" class="flex items-center gap-3.5 group">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 via-terracotta-500 to-terracotta-700 p-0.5 shadow-lg shadow-gold-500/20 group-hover:shadow-gold-500/40 transition-all">
+                    <div class="w-full h-full bg-darkwood rounded-[14px] flex items-center justify-center text-gold-400 text-xl font-bold">
+                        🏺
+                    </div>
+                </div>
+                <div>
+                    <span class="font-display text-2xl font-bold tracking-wider text-white block leading-none">Чайхана Нон</span>
+                    <span class="text-[10px] uppercase tracking-[0.25em] text-gold-400 font-semibold block mt-1">Традиции вкуса</span>
+                </div>
+            </a>
+
+            <!-- Навигация -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide text-sand-200">
+                <a href="#menu" class="hover:text-gold-400 transition-colors">Меню чайханы</a>
+                <a href="#traditions" class="hover:text-gold-400 transition-colors">Наш тандыр</a>
+                <a href="#contacts" class="hover:text-gold-400 transition-colors">Контакты и бронь</a>
+            </nav>
+
+            <!-- Контакты в шапке -->
+            <div class="flex items-center gap-4">
+                <a href="tel:+12345678" class="hidden sm:flex items-center gap-2.5 text-sm font-bold text-sand-100 hover:text-gold-400 transition-colors py-2 px-3 rounded-xl bg-white/5 border border-white/10">
+                    <span class="w-2 h-2 rounded-full bg-gold-400 animate-ping"></span>
+                    + 1 234 567 8
+                </a>
+                
+                <a href="https://t.me/filkanul" target="_blank" rel="noopener noreferrer" 
+                   class="btn-terracotta-glow shimmer-sweep inline-flex items-center gap-2 bg-gradient-to-r from-terracotta-600 via-terracotta-500 to-orange-500 text-white font-bold px-4 py-2.5 rounded-xl text-sm border border-terracotta-500/40">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                    </svg>
+                    <span>@filkanul</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ГЛАВНЫЙ ЭКРАН (Hero Section) — Тёмная эстетика, мерцание угля, живые частицы -->
+    <section class="relative min-h-[92vh] pt-32 pb-24 flex items-center justify-center bg-darkwood overflow-hidden">
+        
+        <!-- Движущийся орнамент -->
+        <div class="absolute inset-0 bg-oriental-grid pointer-events-none opacity-40"></div>
+
+        <!-- Живой градиент (Aurora & Ember Glow) -->
+        <div class="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-terracotta-600/35 rounded-full blur-[140px] pointer-events-none animate-aurora-1"></div>
+        <div class="absolute bottom-10 right-10 w-[600px] h-[600px] bg-gold-600/20 rounded-full blur-[160px] pointer-events-none animate-aurora-2"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-red-950/40 rounded-full blur-[180px] pointer-events-none"></div>
+
+        <!-- Парящие вверх частицы (Искры тандыра и кунжут) -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none z-10">
+            <div class="particle bg-gold-400 w-2 h-2 left-[15%]" style="animation-duration: 9s; animation-delay: 0s;"></div>
+            <div class="particle bg-terracotta-500 w-2.5 h-2.5 left-[30%]" style="animation-duration: 11s; animation-delay: 2s;"></div>
+            <div class="particle bg-gold-300 w-1.5 h-3 rotate-45 left-[48%]" style="animation-duration: 8s; animation-delay: 1.5s;"></div>
+            <div class="particle bg-amber-200 w-2 h-2 left-[68%]" style="animation-duration: 12s; animation-delay: 4s;"></div>
+            <div class="particle bg-gold-400 w-3 h-3 blur-[1px] left-[85%]" style="animation-duration: 10s; animation-delay: 0.5s;"></div>
+            <div class="particle bg-terracotta-500 w-2 h-2 left-[92%]" style="animation-duration: 7s; animation-delay: 3s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-14 items-center">
+                
+                <!-- Левый блок: Заголовок и призывы к действию -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-7">
+                    
+                    <!-- Бейдж качества -->
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-gold-400/30 backdrop-blur-md">
+                        <span class="flex h-2.5 w-2.5 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-gold-500"></span>
+                        </span>
+                        <span class="text-xs uppercase tracking-[0.2em] text-gold-300 font-bold">Живой огонь &bull; Фермерский Халяль</span>
+                    </div>
+
+                    <!-- Главный заголовок с тенью и золотым градиентом -->
+                    <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.12] drop-shadow-[0_8px_25px_rgba(0,0,0,0.9)]">
+                        Настоящая узбекская кухня: <span class="bg-gradient-to-r from-gold-300 via-gold-400 to-terracotta-500 bg-clip-text text-transparent">хрустящие тандырные лепёшки</span> и сочный бешбармак
+                    </h1>
+
+                    <p class="text-lg sm:text-xl text-sand-200/90 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed drop-shadow">
+                        Атмосфера восточной сказки и щедрого дастархана. Выпекаем лепёшки каждые 30 минут в шамотном тандыре и томим мясо для бешбармака по старинному рецепту.
+                    </p>
+
+                    <!-- Особенности в цифрах -->
+                    <div class="pt-2 flex flex-wrap justify-center lg:justify-start gap-8 border-y border-white/10 py-5">
+                        <div>
+                            <span class="block font-display text-3xl font-bold text-gold-400">400°C</span>
+                            <span class="text-xs text-sand-300 uppercase tracking-wider">Жар в глиняной печи</span>
+                        </div>
+                        <div class="w-px h-10 bg-white/10 hidden sm:block"></div>
+                        <div>
+                            <span class="block font-display text-3xl font-bold text-gold-400">6 часов</span>
+                            <span class="text-xs text-sand-300 uppercase tracking-wider">Томление мяса</span>
+                        </div>
+                        <div class="w-px h-10 bg-white/10 hidden sm:block"></div>
+                        <div>
+                            <span class="block font-display text-3xl font-bold text-gold-400">100%</span>
+                            <span class="text-xs text-sand-300 uppercase tracking-wider">Халяль продукты</span>
+                        </div>
+                    </div>
+
+                    <!-- Интерактивные яркие кнопки CTA -->
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5">
+                        <a href="tel:+12345678" 
+                           class="btn-gold-glow shimmer-sweep w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-gold-400 via-gold-500 to-amber-500 text-darkwood font-extrabold rounded-2xl flex items-center justify-center gap-3 text-base tracking-wide">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                            <span>Позвонить: + 1 234 567 8</span>
+                        </a>
+
+                        <a href="https://t.me/filkanul" target="_blank" rel="noopener noreferrer" 
+                           class="btn-terracotta-glow shimmer-sweep w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-terracotta-600 to-terracotta-700 text-white font-extrabold rounded-2xl flex items-center justify-center gap-3 text-base border border-terracotta-500/50">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                            </svg>
+                            <span>Telegram: @filkanul</span>
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Правый блок: Эффектный визуальный дастархан -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        
+                        <!-- Золотое неоновое свечение сзади карточки -->
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-gold-500/30 via-terracotta-500/40 to-transparent rounded-[32px] blur-2xl transform rotate-3"></div>
+
+                        <div class="relative rounded-3xl overflow-hidden border-2 border-gold-400/40 shadow-[0_25px_60px_rgba(0,0,0,0.8)] bg-nightember group">
+                            <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=1100&q=80" 
+                                 alt="Тандырные лепёшки и бешбармак" 
+                                 class="w-full h-[470px] object-cover object-center transform group-hover:scale-105 transition-transform duration-700">
+                            
+                            <div class="absolute inset-0 bg-gradient-to-t from-darkwood via-darkwood/30 to-transparent"></div>
+
+                            <!-- Плавающая плашка «Прямо сейчас из печи» -->
+                            <div class="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-darkwood/85 backdrop-blur-md border border-gold-500/30 shadow-2xl flex items-center justify-between">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-terracotta-600 to-gold-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-terracotta-600/30">
+                                        🔥
+                                    </div>
+                                    <div>
+                                        <p class="font-display font-bold text-white text-base">Тандыр растоплен</p>
+                                        <p class="text-xs text-sand-300">Следующая партия лепёшек через 10 мин</p>
+                                    </div>
+                                </div>
+                                <span class="text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-md bg-gold-400/20 text-gold-300 border border-gold-400/30">С пылу</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Контрастный волнообразный переход к песочному фону меню -->
+        <div class="absolute bottom-0 left-0 right-0 overflow-hidden leading-none z-30">
+            <svg class="relative block w-full h-12 sm:h-20 text-sand-100" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0 C150,95 350,-40 500,60 C650,160 900,10 1200,45 L1200,120 L0,120 Z" fill="currentColor"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ МЕНЮ (Контрастный уютный фон, фильтры, карточки с объемом) -->
+    <section id="menu" class="py-24 bg-sand-100 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-14 scroll-reveal">
+                <span class="text-terracotta-600 font-bold uppercase tracking-[0.2em] text-xs block mb-2">Наше фирменное меню</span>
+                <h2 class="font-display text-4xl sm:text-5xl text-darkwood font-bold">Вкусы щедрого Узбекистана</h2>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-terracotta-500 to-gold-500 mx-auto my-4 rounded-full"></div>
+                <p class="text-wood/80 text-base sm:text-lg">Готовим из отборных восточных продуктов: горные травы, узбекская зира, фермерское мясо и мука высшего помола.</p>
+            </div>
+
+            <!-- Интерактивные фильтры (Табы) -->
+            <div class="flex flex-wrap items-center justify-center gap-3 mb-16 scroll-reveal" id="menu-filters">
+                <button data-filter="all" 
+                        class="tab-btn px-7 py-3 rounded-2xl font-bold text-sm transition-all duration-300 bg-darkwood text-gold-400 shadow-xl shadow-darkwood/20 border border-gold-400/30">
+                    Все блюда
+                </button>
+                <button data-filter="hot" 
+                        class="tab-btn px-7 py-3 rounded-2xl font-bold text-sm transition-all duration-300 bg-white text-wood/80 hover:bg-sand-200 border border-sand-300 shadow-sm">
+                    Горячие блюда
+                </button>
+                <button data-filter="bakery" 
+                        class="tab-btn px-7 py-3 rounded-2xl font-bold text-sm transition-all duration-300 bg-white text-wood/80 hover:bg-sand-200 border border-sand-300 shadow-sm">
+                    Тандырная выпечка
+                </button>
+                <button data-filter="drinks" 
+                        class="tab-btn px-7 py-3 rounded-2xl font-bold text-sm transition-all duration-300 bg-white text-wood/80 hover:bg-sand-200 border border-sand-300 shadow-sm">
+                    Напитки
+                </button>
+            </div>
+
+            <!-- Сетка из 6 фирменных блюд с hover-zoom scale-105 и тенями -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9" id="dishes-grid">
+
+                <!-- 1. Настоящий Бешбармак -->
+                <div class="menu-card scroll-reveal bg-sand-50 rounded-3xl overflow-hidden border border-sand-300/80 shadow-[0_15px_40px_rgba(20,5,7,0.08)] hover:shadow-[0_25px_50px_rgba(189,62,23,0.2)] hover:-translate-y-2 transition-all duration-500 flex flex-col group" data-category="hot">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" 
+                             alt="Настоящий Бешбармак" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkwood/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span class="absolute top-4 left-4 bg-terracotta-600 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
+                            Фирменный хит
+                        </span>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-display text-2xl font-bold text-darkwood group-hover:text-terracotta-600 transition-colors mb-2">Настоящий Бешбармак</h3>
+                            <p class="text-wood/75 text-sm leading-relaxed mb-6">
+                                Нежнейшая томлёная говяжья и конская вырезка, тончайшее тесто ручной раскатки, пряный луковый соус «туздык» и наваристый янтарный бульон в пиале.
+                            </p>
+                        </div>
+                        <div class="pt-5 border-t border-sand-200 flex items-center justify-between">
+                            <span class="text-xs uppercase tracking-wider text-terracotta-600 font-bold">Горячее блюдо</span>
+                            <a href="#contacts" class="inline-flex items-center gap-2 font-bold text-darkwood group-hover:text-terracotta-600 transition-colors text-sm">
+                                Заказать <span>&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Горячая Тандырная Лепёшка -->
+                <div class="menu-card scroll-reveal bg-sand-50 rounded-3xl overflow-hidden border border-sand-300/80 shadow-[0_15px_40px_rgba(20,5,7,0.08)] hover:shadow-[0_25px_50px_rgba(234,179,8,0.25)] hover:-translate-y-2 transition-all duration-500 flex flex-col group" data-category="bakery">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80" 
+                             alt="Горячая Тандырная Лепёшка" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkwood/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span class="absolute top-4 left-4 bg-gold-500 text-darkwood text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
+                            Из печи
+                        </span>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-display text-2xl font-bold text-darkwood group-hover:text-terracotta-600 transition-colors mb-2">Горячая Тандырная Лепёшка</h3>
+                            <p class="text-wood/75 text-sm leading-relaxed mb-6">
+                                Знаменитый патыр прямо со стенок глиняной печи. Хрустящая узорная корочка с золотистым глянцем, семенами седаны (чернушки) и белого кунжута.
+                            </p>
+                        </div>
+                        <div class="pt-5 border-t border-sand-200 flex items-center justify-between">
+                            <span class="text-xs uppercase tracking-wider text-gold-600 font-bold">Выпечка</span>
+                            <a href="#contacts" class="inline-flex items-center gap-2 font-bold text-darkwood group-hover:text-terracotta-600 transition-colors text-sm">
+                                Заказать <span>&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Плов Ферганский -->
+                <div class="menu-card scroll-reveal bg-sand-50 rounded-3xl overflow-hidden border border-sand-300/80 shadow-[0_15px_40px_rgba(20,5,7,0.08)] hover:shadow-[0_25px_50px_rgba(189,62,23,0.2)] hover:-translate-y-2 transition-all duration-500 flex flex-col group" data-category="hot">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?auto=format&fit=crop&w=800&q=80" 
+                             alt="Плов Ферганский" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkwood/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span class="absolute top-4 left-4 bg-terracotta-700 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
+                            Сердце кухни
+                        </span>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-display text-2xl font-bold text-darkwood group-hover:text-terracotta-600 transition-colors mb-2">Плов Ферганский</h3>
+                            <p class="text-wood/75 text-sm leading-relaxed mb-6">
+                                Тот самый праздничный плов на красноватом рисе девзира, сочной баранине, жёлтой сладкой моркови, крупном нуте, барбарисе и запеченном чесноке.
+                            </p>
+                        </div>
+                        <div class="pt-5 border-t border-sand-200 flex items-center justify-between">
+                            <span class="text-xs uppercase tracking-wider text-terracotta-600 font-bold">Горячее блюдо</span>
+                            <a href="#contacts" class="inline-flex items-center gap-2 font-bold text-darkwood group-hover:text-terracotta-600 transition-colors text-sm">
+                                Заказать <span>&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Самса с мясом и луком -->
+                <div class="menu-card scroll-reveal bg-sand-50 rounded-3xl overflow-hidden border border-sand-300/80 shadow-[0_15px_40px_rgba(20,5,7,0.08)] hover:shadow-[0_25px_50px_rgba(234,179,8,0.25)] hover:-translate-y-2 transition-all duration-500 flex flex-col group" data-category="bakery">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80" 
+                             alt="Самса тандырная" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkwood/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span class="absolute top-4 left-4 bg-gold-600 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
+                            Хруст и сок
+                        </span>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-display text-2xl font-bold text-darkwood group-hover:text-terracotta-600 transition-colors mb-2">Самса с мясом и луком</h3>
+                            <p class="text-wood/75 text-sm leading-relaxed mb-6">
+                                Слоеное тесто ручной формовки, запеченное в тандыре. Внутри — рубленая мякоть говядины и баранины с курдюком, зирой и обжигающим соком.
+                            </p>
+                        </div>
+                        <div class="pt-5 border-t border-sand-200 flex items-center justify-between">
+                            <span class="text-xs uppercase tracking-wider text-gold-600 font-bold">Выпечка</span>
+                            <a href="#contacts" class="inline-flex items-center gap-2 font-bold text-darkwood group-hover:text-terracotta-600 transition-colors text-sm">
+                                Заказать <span>&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Шурпа с бараниной -->
+                <div class="menu-card scroll-reveal bg-sand-50 rounded-3xl overflow-hidden border border-sand-300/80 shadow-[0_15px_40px_rgba(20,5,7,0.08)] hover:shadow-[0_25px_50px_rgba(189,62,23,0.2)] hover:-translate-y-2 transition-all duration-500 flex flex-col group" data-category="hot">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80" 
+                             alt="Шурпа с бараниной" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkwood/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span class="absolute top-4 left-4 bg-terracotta-600 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
+                            Наваристая
+                        </span>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-display text-2xl font-bold text-darkwood group-hover:text-terracotta-600 transition-colors mb-2">Шурпа с бараниной</h3>
+                            <p class="text-wood/75 text-sm leading-relaxed mb-6">
+                                Прозрачный янтарный бульон долгого томления с крупными кусками нежной фермерской баранины, сладким перцем, картофелем и свежей кинзой.
+                            </p>
+                        </div>
+                        <div class="pt-5 border-t border-sand-200 flex items-center justify-between">
+                            <span class="text-xs uppercase tracking-wider text-terracotta-600 font-bold">Горячее блюдо</span>
+                            <a href="#contacts" class="inline-flex items-center gap-2 font-bold text-darkwood group-hover:text-terracotta-600 transition-colors text-sm">
+                                Заказать <span>&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Восточный чай с травами -->
+                <div class="menu-card scroll-reveal bg-sand-50 rounded-3xl overflow-hidden border border-sand-300/80 shadow-[0_15px_40px_rgba(20,5,7,0.08)] hover:shadow-[0_25px_50px_rgba(234,179,8,0.25)] hover:-translate-y-2 transition-all duration-500 flex flex-col group" data-category="drinks">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80" 
+                             alt="Восточный чай с травами" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-darkwood/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span class="absolute top-4 left-4 bg-gold-500 text-darkwood text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-xl shadow-md">
+                            Чайханский сбор
+                        </span>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow justify-between">
+                        <div>
+                            <h3 class="font-display text-2xl font-bold text-darkwood group-hover:text-terracotta-600 transition-colors mb-2">Восточный чай с травами</h3>
+                            <p class="text-wood/75 text-sm leading-relaxed mb-6">
+                                Зеленый или черный чай в расписном чайнике пахта. Заваривается с горным чабрецом, мятой, барбарисом и подаётся с кристаллическим сахаром-наватом.
+                            </p>
+                        </div>
+                        <div class="pt-5 border-t border-sand-200 flex items-center justify-between">
+                            <span class="text-xs uppercase tracking-wider text-gold-600 font-bold">Напитки</span>
+                            <a href="#contacts" class="inline-flex items-center gap-2 font-bold text-darkwood group-hover:text-terracotta-600 transition-colors text-sm">
+                                Заказать <span>&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ ТРАДИЦИЙ И ПРЕИМУЩЕСТВ -->
+    <section id="traditions" class="py-24 bg-sand-200/50 border-t border-sand-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="scroll-reveal p-8 rounded-3xl bg-sand-50 border border-sand-300 shadow-md flex flex-col gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-terracotta-500/10 flex items-center justify-center text-terracotta-600 text-2xl">
+                        🏺
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-darkwood">Шамотный тандыр</h3>
+                    <p class="text-sm text-wood/75 leading-relaxed">
+                        Никакого электричества. Печь выложена вручную по технологиям мастеров Самарканда. Хлеб впитывает тонкий дух фруктовых дров.
+                    </p>
+                </div>
+
+                <div class="scroll-reveal p-8 rounded-3xl bg-sand-50 border border-sand-300 shadow-md flex flex-col gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-gold-500/15 flex items-center justify-center text-gold-600 text-2xl">
+                        🥩
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-darkwood">Халяль и чистота</h3>
+                    <p class="text-sm text-wood/75 leading-relaxed">
+                        Исключительно свежее охлажденное мясо местных фермерских хозяйств. Никаких полуфабрикатов — заводим тесто и лепим каждый день с утра.
+                    </p>
+                </div>
+
+                <div class="scroll-reveal p-8 rounded-3xl bg-sand-50 border border-sand-300 shadow-md flex flex-col gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-terracotta-500/10 flex items-center justify-center text-terracotta-600 text-2xl">
+                        🫖
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-darkwood">Культ гостя</h3>
+                    <p class="text-sm text-wood/75 leading-relaxed">
+                        «Гость дороже отца» — восточное правило нашего дома. Щедрые порции, мягкие топчаны и душевное отношение к каждой семье.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ КОНТАКТОВ И БРОНИ (Премиальный темный фон, золото) -->
+    <section id="contacts" class="py-24 bg-darkwood text-white relative overflow-hidden">
+        <!-- Мерцающие пятна на фоне -->
+        <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-terracotta-600/30 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="absolute -left-20 -top-20 w-80 h-80 bg-gold-500/20 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6 scroll-reveal">
+                    <span class="text-gold-400 font-bold uppercase tracking-[0.2em] text-xs block">Ждём вас на дастархан</span>
+                    <h2 class="font-display text-4xl sm:text-5xl font-bold leading-tight">
+                        Забронируйте топчан или закажите доставку горячих блюд
+                    </h2>
+                    <p class="text-sand-300 text-lg max-w-xl font-light leading-relaxed">
+                        Позвоните нам или напишите в Telegram: администратор сразу ответит, сориентирует по времени выпечки лепешек и подготовит ваш заказ к подаче.
+                    </p>
+
+                    <!-- Блок кнопок прямого контакта -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
+                        
+                        <!-- Телефон -->
+                        <a href="tel:+12345678" 
+                           class="btn-gold-glow shimmer-sweep p-5 rounded-2xl bg-white/5 border border-gold-400/30 hover:border-gold-400 flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-xl bg-gold-400 flex items-center justify-center text-darkwood font-bold text-xl shadow-lg">
+                                📞
+                            </div>
+                            <div>
+                                <span class="text-xs text-sand-300 block">Быстрый звонок</span>
+                                <span class="text-lg font-bold text-white group-hover:text-gold-300 tracking-wider">+ 1 234 567 8</span>
+                            </div>
+                        </a>
+
+                        <!-- Telegram -->
+                        <a href="https://t.me/filkanul" target="_blank" rel="noopener noreferrer" 
+                           class="btn-terracotta-glow shimmer-sweep p-5 rounded-2xl bg-white/5 border border-terracotta-500/40 hover:border-terracotta-500 flex items-center gap-4 group">
+                            <div class="w-12 h-12 rounded-xl bg-terracotta-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                                ✈️
+                            </div>
+                            <div>
+                                <span class="text-xs text-sand-300 block">Чат и заказы</span>
+                                <span class="text-lg font-bold text-white group-hover:text-gold-300 tracking-wider">@filkanul</span>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- Карточка часов работы -->
+                <div class="lg:col-span-5 bg-white/5 backdrop-blur-xl p-8 sm:p-10 rounded-3xl border border-white/10 space-y-6 shadow-2xl scroll-reveal">
+                    <h3 class="font-display text-2xl font-bold text-gold-400">Режим и гостеприимство</h3>
+                    
+                    <div class="space-y-4 text-sm text-sand-200">
+                        <div class="flex items-start gap-3.5">
+                            <span class="text-gold-400 text-lg">📍</span>
+                            <div>
+                                <strong class="block text-white">Адрес кафе:</strong>
+                                <span>ул. Самаркандская, д. 15 (Уютный зал с топчанами)</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3.5">
+                            <span class="text-gold-400 text-lg">🕒</span>
+                            <div>
+                                <strong class="block text-white">График работы:</strong>
+                                <span>Ежедневно с 10:00 до 23:00 (без выходных)</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3.5">
+                            <span class="text-gold-400 text-lg">🫓</span>
+                            <div>
+                                <strong class="block text-white">Свежие лепёшки:</strong>
+                                <span>Каждые 30-40 минут с пылу с жару</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="https://t.me/filkanul" target="_blank" rel="noopener noreferrer" 
+                       class="btn-gold-glow shimmer-sweep block w-full py-4 bg-gradient-to-r from-gold-400 to-amber-500 text-darkwood font-extrabold rounded-2xl text-center shadow-lg text-base">
+                        Написать менеджеру в Telegram
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ПОДВАЛ (Footer) -->
+    <footer class="bg-black text-sand-400 py-8 border-t border-white/10 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="font-display text-white text-sm font-bold">Чайхана Нон</span>
+                <span>&bull; Традиционная узбекская кухня</span>
+            </div>
+            <div class="flex gap-6 font-semibold">
+                <a href="tel:+12345678" class="hover:text-gold-400 transition-colors">+ 1 234 567 8</a>
+                <a href="https://t.me/filkanul" target="_blank" rel="noopener noreferrer" class="hover:text-gold-400 transition-colors">@filkanul</a>
+            </div>
+            <div class="text-sand-400/60">
+                Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Логика (Табы меню и Scroll Reveal) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Фильтрация меню
+            const filterBtns = document.querySelectorAll('.tab-btn');
+            const cards = document.querySelectorAll('.menu-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.dataset.filter;
+
+                    // Смена стилей табов
+                    filterBtns.forEach(b => {
+                        b.classList.remove('bg-darkwood', 'text-gold-400', 'shadow-xl', 'border-gold-400/30');
+                        b.classList.add('bg-white', 'text-wood/80', 'border-sand-300');
+                    });
+                    btn.classList.add('bg-darkwood', 'text-gold-400', 'shadow-xl', 'border-gold-400/30');
+                    btn.classList.remove('bg-white', 'text-wood/80');
+
+                    // Фильтрация карточек
+                    cards.forEach(card => {
+                        const cat = card.dataset.category;
+                        if (filter === 'all' || cat === filter) {
+                            card.classList.remove('is-hidden');
+                        } else {
+                            card.classList.add('is-hidden');
+                        }
+                    });
+                });
+            });
+
+            // 2. Scroll Reveal (Плавное появление элементов)
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
